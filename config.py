@@ -24,13 +24,15 @@
 from characters import characters
 
 config = {
-    "mainCharacter": 0,  # must be in between number 0 to len(characters) - 1 (0 is the first character)
+    "mainCharacter": 2,  # must be in between number 0 to len(characters) - 1 (0 is the first character)
     "GFN": True,  # set True for Geforce Now users
     "enableMultiCharacterMode": True,  # this is lit
     "enableLopang": True,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^
+    "enableLeapstoneDailies": False,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^ ~ WORK IN PROGRESS. READ THE CODE OR DONT USE YET. ~
     "enableGuildDonation": True,  # please make sure all your characters have a guild
     "enableRapport": False,  # NOTE: you need to setup bifrost no3 infront of a rapport NPC
     "floor3Mode": False,  # only enable if you ONLY want to run infinite floor3 clearing
+    "ezPetMenu": False, # Set to TRUE if you have your pet menu set to Tilde (`). FALSE if default (Alt + P)
     # Setup your characters below:
     # can setup UP TO 18(0 to 17) characters for daily chaos/lopang/guild stuff
     # however your main must be in character 0 to 5 (just for re-connect back after disconnection happens)
@@ -40,14 +42,14 @@ config = {
     "characters": characters,
     "performance": False,  # set True for lower-end PCs
     "interact": "g",  # change this if you have binded it to something else eg.mouse button
-    "move": "left",  # or "right"
+    "move": "right",  # or "right"
     "blink": "space",
     "meleeAttack": "c",
     "awakening": "v",
-    "healthPot": "f1",  # important to put your regen potion on this button
+    "healthPot": "5",  # important to put your regen potion on this button
     "friends": "u",
     "invisible": True,
-    "healthPotAtPercent": 0.35,  # health threshold to trigger potion
+    "healthPotAtPercent": 0.25,  # health threshold to trigger potion
     # "useAwakening": True, # not checking this for now
     # "useSpeciality1": True, # not checking this for now
     # "useSpeciality2": True, # not checking this for now

@@ -32,7 +32,7 @@ newStates = {
     "gameOfflineCount": 0,
     "minTime": config["timeLimit"],
     "maxTime": -1,
-    "floor3Mode": False,
+    "floor3Mode": True,
     "multiCharacterMode": False,
     "currentCharacter": config["mainCharacter"],
     "multiCharacterModeState": [],
@@ -86,6 +86,16 @@ def main():
 
     # save bot start time
     states["botStartTime"] = int(time.time_ns() / 1000000)
+
+    # leapstones
+    if (
+        config["enableLeapstoneDailies"]
+        and config["characters"][states["currentCharacter"]]["leapstones"]
+    ):
+        # collect leaps
+        print("Doing Mokomoko Night Market daily on : {}".format(states["currentCharacter"]))
+        doMokomoko()
+        print("Mokomoko Night Market daily done on : {}".format(states["currentCharacter"]))
 
     while True:
         if states["status"] == "inCity":
@@ -189,6 +199,15 @@ def main():
                         closeGameByClickingDialogue()
                         continue
 
+                    # leapstones
+                    if (
+                        config["enableLeapstoneDailies"]
+                        and config["characters"][states["currentCharacter"]]["leapstones"]
+                    ):
+                        # collect leaps
+                        print("Doing Mokomoko Night Market daily on : {}".format(states["currentCharacter"]))
+                        doMokomoko()
+                        print("Mokomoko Night Market daily done on : {}".format(states["currentCharacter"]))
                     # just finished last char before main
                     print(
                         "just finished last char before main, closing multi-char mode"
@@ -650,7 +669,7 @@ def doFloor1():
 
     # check repair
     if config["auraRepair"]:
-        doAuraRepair(False)
+        doAuraRepair(True)
 
     # trigger start floor 1
     mouseMoveTo(x=845, y=600)
@@ -660,9 +679,9 @@ def doFloor1():
 
     # switch to akir
     if config["characters"][states["currentCharacter"]]["class"] == "summoner":
-        mouseMoveTo(x=1010, y=865)
+        mouseMoveTo(x=985, y=865)
         sleep(800, 900)
-        pydirectinput.click(x=1010, y=865, button="left")
+        pydirectinput.click(x=985, y=865, button="left")
         sleep(800, 900)
 
     # berserker z
@@ -797,7 +816,7 @@ def doFloor3Portal():
     if bossBar != None:
         print("purple boss bar located")
         states["purplePortalCount"] = states["purplePortalCount"] + 1
-        pydirectinput.press(config["awakening"])
+        # pydirectinput.press(config["awakening"])
         while True:
             useAbilities()
 
@@ -1298,7 +1317,7 @@ def useAbilities():
                 moveToMinimapRelative(
                     states["moveToX"], states["moveToY"], 700, 800, True
                 )
-                pydirectinput.press(config["awakening"])
+                # pydirectinput.press(config["awakening"])
                 # pydirectinput.press(config["meleeAttack"])
             elif states["status"] == "floor3" and checkFloor3Tower():
                 if not checkFloor2Elite() and not checkFloor2Mob():
@@ -1963,15 +1982,15 @@ def fightFloor2Boss():
         print("boss bar located")
         mouseMoveTo(x=states["moveToX"], y=states["moveToY"])
         sleep(80, 100)
-        pydirectinput.press(config["awakening"])
-        if (
-            config["characters"][states["currentCharacter"]]["class"] == "summoner"
-            or config["characters"][states["currentCharacter"]]["class"] == "paladin"
-        ):
-            sleep(80, 100)
-            pydirectinput.press(config["awakening"])
-            sleep(80, 100)
-            pydirectinput.press(config["awakening"])
+        # pydirectinput.press(config["awakening"])
+        # if (
+        #     config["characters"][states["currentCharacter"]]["class"] == "summoner"
+        #     or config["characters"][states["currentCharacter"]]["class"] == "paladin"
+        # ):
+        #     sleep(80, 100)
+        #     pydirectinput.press(config["awakening"])
+        #     sleep(80, 100)
+        #     pydirectinput.press(config["awakening"])
 
 
 # def fightFloor2Boss():
@@ -2390,11 +2409,14 @@ def doAuraRepair(forced):
         region=(1500, 134, 100, 100),
     ):
         print("repairing")
-        pydirectinput.keyDown("alt")
-        sleep(800, 900)
-        pydirectinput.press("p")
-        sleep(800, 900)
-        pydirectinput.keyUp("alt")
+        if (config['ezPetMenu']):
+            pydirectinput.press("`")
+        else:
+            pydirectinput.keyDown("alt")
+            sleep(800, 900)
+            pydirectinput.press("p")
+            sleep(800, 900)
+            pydirectinput.keyUp("alt")
         sleep(2500, 2600)
         mouseMoveTo(x=1142, y=661)
         sleep(2500, 2600)
@@ -3235,7 +3257,7 @@ def songandemoterapport():
 def doLopang():
     sleep(1000, 2000)
     print("accepting lopang daily")
-    doDaily = acceptLopangDaily()
+    doDaily = acceptFavouriteDaily()
     sleep(1500, 1600)
     if doDaily == False:
         return
@@ -3264,21 +3286,75 @@ def doLopang():
         return
     if offlineCheck():
         return
-    spamG(10000)
+    spamG(7000)
+    sleep(1500, 1600)
+    bifrostGoTo(2)
+    if gameCrashCheck():
+        return
+    if offlineCheck():
+        return
+    spamG(7000)
     sleep(1500, 1600)
     bifrostGoTo(3)
     if gameCrashCheck():
         return
     if offlineCheck():
         return
-    spamG(10000)
+    spamG(7000)
+
+def doMokomoko():
+    sleep(1000, 2000)
+    print("Accepting the top 3 favourite dailies")
+    doDaily = acceptFavouriteDaily()
     sleep(1500, 1600)
-    bifrostGoTo(4)
+    if doDaily == False:
+        return
+    sleep(500, 600)
     if gameCrashCheck():
         return
     if offlineCheck():
         return
-    spamG(10000)
+
+    sleep(1500, 1600)
+
+    # Daily 1: Go to mokomoko island
+    if config["characters"][states["currentCharacter"]]["mokomokoBifrost"]:
+        bifrostAvailable = bifrostGoTo(config["characters"][states["currentCharacter"]]["mokomokoBifrost"])
+    else: 
+        bifrostAvailable = bifrostGoTo(0)
+
+    if bifrostAvailable == False:
+        return
+    if gameCrashCheck():
+        return
+    if offlineCheck():
+        return
+    sleep(1500, 2500)
+    walkMokomoko()
+    # Daily 2: TBD
+    # Daily 3: TBD
+    
+    # sleep(1500, 1600)
+    # bifrostGoTo(1)
+    # if gameCrashCheck():
+    #     return
+    # if offlineCheck():
+    #     return
+    # spamG(7000)
+    # sleep(1500, 1600)
+    # bifrostGoTo(2)
+    # if gameCrashCheck():
+    #     return
+    # if offlineCheck():
+    #     return
+    # spamG(7000)
+    # sleep(1500, 1600)
+    # bifrostGoTo(3)
+    # if gameCrashCheck():
+    #     return
+    # if offlineCheck():
+    #     return
+    # spamG(7000)
 
 
 def bifrostGoTo(option):
@@ -3411,6 +3487,33 @@ def walkLopang():
     pydirectinput.PAUSE = 0.05
     sleep(1000, 2000)
 
+def walkMokomoko():
+    pydirectinput.PAUSE = 0.1
+    sleep(1000, 2000)
+    print("We are walking the Mokomoko Daily")
+    spamG(5000) # Talk to Mokomoko
+    print("Talk to Mokomoko")
+
+    walkWithAlt(550, 730, 750)
+    print("Interacting with NPC 1...")
+    spamG(5000) # Interact with NPC 1
+
+    walkWithAlt(1115, 730, 750)
+    print("Interacting with NPC 2...")
+    spamG(5000) # Interact with NPC 2
+
+    walkWithAlt(1350, 830, 750)
+    print("Interacting with NPC 3...")
+    spamG(5000) # Interact with NPC 3
+    
+    print("Time to return to Mokomoko!")
+    walkWithAlt(915, 136, 2000) # Walk back to mokomoko - Intro
+    walkWithAlt(950, 400, 1000) # Walk back to mokomoko - Credits
+    spamG(5000) # Interact with Mokomoko
+
+    sleep(1000, 2000)
+    pydirectinput.PAUSE = 0.05
+    sleep(1000, 2000)
 
 def checkBlueCrystal():
     """
@@ -3432,7 +3535,7 @@ def checkBlueCrystal():
         return True
 
 
-def acceptLopangDaily():
+def acceptFavouriteDaily():
     sleep(500, 600)
     pydirectinput.keyDown("alt")
     sleep(500, 600)
@@ -3441,7 +3544,7 @@ def acceptLopangDaily():
     pydirectinput.keyUp("alt")
     sleep(2900, 3200)
 
-    mouseMoveTo(x=564, y=250)
+    mouseMoveTo(x=564, y=250) # Select Daily
     sleep(2800, 2900)
     pydirectinput.click(x=564, y=250, button="left")
     sleep(500, 600)
@@ -3450,7 +3553,7 @@ def acceptLopangDaily():
     pydirectinput.click(x=564, y=250, button="left")
     sleep(2800, 2900)
 
-    mouseMoveTo(x=583, y=313)
+    mouseMoveTo(x=583, y=313) # Select Quest Filter
     sleep(2800, 2900)
     pydirectinput.click(x=583, y=313, button="left")
     sleep(500, 600)
@@ -3459,7 +3562,7 @@ def acceptLopangDaily():
     pydirectinput.click(x=583, y=313, button="left")
     sleep(2800, 2900)
 
-    mouseMoveTo(x=583, y=404)
+    mouseMoveTo(x=583, y=404) # Select 'Added to Favorites'
     sleep(2800, 2900)
     pydirectinput.click(x=583, y=404, button="left")
     sleep(500, 600)
@@ -3468,29 +3571,29 @@ def acceptLopangDaily():
     pydirectinput.click(x=583, y=404, button="left")
     sleep(2800, 2900)
 
-    sleep(2900, 3200)
+    sleep(2900, 3200) 
     dailyCompleted = pyautogui.locateCenterOnScreen(
         "./screenshots/dailyCompleted.png",
         confidence=0.75,
         region=(1143, 339, 110, 400),
     )
-
+    # Check if the dailies have been completed already.  Skip if they have
     if dailyCompleted != None:
         pydirectinput.press("esc")
         sleep(1900, 2200)
         return False
 
-    mouseMoveTo(x=1206, y=398)
+    mouseMoveTo(x=1206, y=398) # Select Daily #1
     sleep(2800, 2900)
     pydirectinput.click(x=1206, y=398, button="left")
     sleep(2800, 2900)
 
-    mouseMoveTo(x=1206, y=455)
+    mouseMoveTo(x=1206, y=455) # Select Daily #2
     sleep(2800, 2900)
     pydirectinput.click(x=1206, y=455, button="left")
     sleep(2800, 2900)
 
-    mouseMoveTo(x=1206, y=512)
+    mouseMoveTo(x=1206, y=512) # Select Daily #3
     sleep(2800, 2900)
     pydirectinput.click(x=1206, y=512, button="left")
 
@@ -3526,6 +3629,9 @@ def walkPressG(lopangX, lopangY, milliseconds):
 
 def spamG(milliseconds):
     timeCount = milliseconds / 100
+    pydirectinput.keyDown("shift")
+    pydirectinput.press("g")
+    pydirectinput.keyUp("shift")
     while timeCount != 0:
         pydirectinput.press("g")
         sleep(90, 120)
