@@ -33,7 +33,7 @@ newStates = {
     "minTime": config["timeLimit"],
     "maxTime": -1,
     "floor3Mode": True,
-    "multiCharacterMode": False,
+    "multiCharacterMode": config["enableMultiCharacterMode"],
     "currentCharacter": config["mainCharacter"],
     "multiCharacterModeState": [],
 }
