@@ -38,8 +38,8 @@ Utilities:
 - Install pip (if you dont have) from your terminal:
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py
-python3 -m pip install --upgrade pip
+python get-pip.py
+python -m pip install --upgrade pip
 ```
 
 ### 1. Please change game settings to EXACTLY these numbers:
@@ -68,7 +68,7 @@ lots of things can be customized for your best experience.
 git clone https://github.com/Asemco/LostArk-Endless-Chaos (Alternatively, download the page as a Zip)
 cd LostArk-Endless-Chaos
 pip install -r requirements.txt
-python3 .\bot.py
+python .\bot.py
 ```
 
 \

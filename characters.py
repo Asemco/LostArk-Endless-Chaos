@@ -54,7 +54,7 @@ characters = [
         "leapstones": True,
         "guildDonation": True,
         "rapport": False,
-        "mokomokoBifrost": 4,
+        "mokomokoBifrost": 3,
     },
     {
         "index": 5,
