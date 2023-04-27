@@ -28,7 +28,7 @@ config = {
     "GFN": True,  # set True for Geforce Now users
     "enableMultiCharacterMode": True,  # this is lit
     "enableLopang": True,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^
-    "enableLeapstoneDailies": True,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^ ~ WORK IN PROGRESS. READ THE CODE OR DONT USE YET. ~
+    "enableLeapstoneDailies": False,  # NOTE: you need to setup bifrost locations properly for this, at very specific locations. Look up ^ ~ WORK IN PROGRESS. READ THE CODE OR DONT USE YET. ~
     "enableGuildDonation": True,  # please make sure all your characters have a guild
     "enableRapport": False,  # NOTE: you need to setup bifrost no3 infront of a rapport NPC
     "floor3Mode": False,  # only enable if you ONLY want to run infinite floor3 clearing
