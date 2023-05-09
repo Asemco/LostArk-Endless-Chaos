@@ -117,5 +117,4 @@ characters = [
         "guildDonation": False,
         "rapport": False,
     },
-    }
 ]
