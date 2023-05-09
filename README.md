@@ -31,13 +31,15 @@ Utilities:
 ## Getting started (Please read)
 
 ### 0. Prerequisites:
+- Install Git (if you dont have)
+- - https://git-scm.com/downloads (Standalone Installer 64-bit for Windows users, just Next all the way through)
 - Install/Open a Command Line/Terminal app in your operating system.
 - Install Python3 (if you dont have)
 - Install pip (if you dont have) from your terminal:
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py
-python3 -m pip install --upgrade pip
+python get-pip.py
+python -m pip install --upgrade pip
 ```
 
 ### 1. Please change game settings to EXACTLY these numbers:
@@ -63,10 +65,10 @@ lots of things can be customized for your best experience.
 ### 3. Start running script:
 
 ```
-git clone https://github.com/any-other-guy/Endless-Chaos.git
-cd Endless-Chaos
+git clone https://github.com/Asemco/LostArk-Endless-Chaos (Alternatively, download the page as a Zip)
+cd LostArk-Endless-Chaos
 pip install -r requirements.txt
-python3 .\bot.py
+python .\bot.py
 ```
 
 \
