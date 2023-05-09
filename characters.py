@@ -114,4 +114,13 @@ characters = [
         "guildDonation": False,
         "rapport": False,
     },
+    {
+        "index": 11,
+        "class": "soulfist",
+        "ilvl-endless": 1445,
+        "ilvl-aor": 1445,
+        "lopang": False,
+        "guildDonation": False,
+        "rapport": False,
+    },
 ]
