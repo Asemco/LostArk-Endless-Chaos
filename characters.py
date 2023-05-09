@@ -116,5 +116,6 @@ characters = [
         "leapstones": False,
         "guildDonation": False,
         "rapport": False,
+    },
     }
 ]

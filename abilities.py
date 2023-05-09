@@ -685,6 +685,7 @@ abilities = {
             "castTime": 1000,
             "position": {"left": 738, "top": 869, "width": 15, "height": 15},
             "directional": True,
+            "directional": True,
         },
         {
             "key": "w",
@@ -909,7 +910,7 @@ abilities = {
             "cast": True,
             "castTime": 500,
             "position": {"left": 816, "top": 869, "width": 15, "height": 15},
-            "directional": False,
+            "directional": True,
         },
         {
             "key": "r",
@@ -919,7 +920,7 @@ abilities = {
             "cast": False,
             "castTime": None,
             "position": {"left": 855, "top": 869, "width": 15, "height": 15},
-            "directional": False,
+            "directional": True,
         },
         {
             "key": "a",
