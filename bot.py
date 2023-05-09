@@ -1411,8 +1411,16 @@ def useAbilities():
                 elif sniperStance != None:
                     pydirectinput.press("z")
                     sleep(150, 160)
+            # elif (
+            #     config["characters"][states["currentCharacter"]]["class"] == "glavier"
+            #     and i == 8
+            # ):
+            #     pydirectinput.press("z")
+            #     sleep(150, 160)
             elif (
-                config["characters"][states["currentCharacter"]]["class"] == "glavier"
+                config["characters"][states["currentCharacter"]]["class"] == "glavier" or
+                config["characters"][states["currentCharacter"]]["class"] == "soulfist" or
+                config["characters"][states["currentCharacter"]]["class"] == "machinist"
                 and i == 8
             ):
                 pydirectinput.press("z")
@@ -2626,7 +2634,7 @@ def gameCrashCheck():
             print("game inactive...")
             states["gameCrashCount"] = states["gameCrashCount"] + 1
             return True
-    bottom = pyautogui.screenshot(region=(800, 960, 250, 50))
+    bottom = pyautogui.screenshot(region=(500, 960, 250, 50))
     r1, g1, b1 = bottom.getpixel((0, 0))
     r2, g2, b2 = bottom.getpixel((0, 49))
     r3, g3, b3 = bottom.getpixel((249, 0))
@@ -2828,7 +2836,7 @@ def restartGame():
                 sleep(40000, 42000)
                 break
             if loaGFNplay != None:
-                x, y = loaGFN
+                x, y = loaGFNplay
                 mouseMoveTo(x=x, y=y)
                 sleep(2200, 2300)
                 pydirectinput.click(x=x, y=y, button="left")
@@ -3051,11 +3059,11 @@ def switchToCharacter(index):
     pydirectinput.click(button="left")
     sleep(1000, 1000)
 
-    currentTime = int(time.time_ns() / 1000000)
-    switchToChar = pyautogui.screenshot()
-    switchToChar.save(
-        "./debug/switchToChar_" + str(index) + "_" + str(currentTime) + ".png"
-    )
+    # currentTime = int(time.time_ns() / 1000000)
+    # switchToChar = pyautogui.screenshot()
+    # switchToChar.save(
+    #     "./debug/switchToChar_" + str(index) + "_" + str(currentTime) + ".png"
+    # )
 
     mouseMoveTo(x=config["charSelectOkX"], y=config["charSelectOkY"])
     sleep(1500, 1600)
