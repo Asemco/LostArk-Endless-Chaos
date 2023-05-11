@@ -1014,8 +1014,8 @@ abilities = {
         {
             "key": "r",
             "abilityType": "normal",
-            "hold": False,
-            "holdTime": None,
+            "hold": True,
+            "holdTime": 3100,
             "cast": False,
             "castTime": None,
             "position": {"left": 855, "top": 869, "width": 15, "height": 15},
@@ -1054,8 +1054,8 @@ abilities = {
         {
             "key": "f",
             "abilityType": "normal",
-            "hold": False,
-            "holdTime": None,
+            "hold": True,
+            "holdTime": 3100,
             "cast": False,
             "castTime": None,
             "position": {"left": 873, "top": 907, "width": 15, "height": 15},
