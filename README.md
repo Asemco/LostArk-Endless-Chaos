@@ -65,7 +65,8 @@ lots of things can be customized for your best experience.
 ### 3. Start running script:
 
 ```
-git clone https://github.com/Asemco/LostArk-Endless-Chaos (Alternatively, download the page as a Zip)
+git clone https://github.com/Asemco/LostArk-Endless-Chaos 
+- (Alternatively, download the page as a Zip)
 cd LostArk-Endless-Chaos
 pip install -r requirements.txt
 python .\bot.py

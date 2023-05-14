@@ -816,7 +816,7 @@ def doFloor3Portal():
     if bossBar != None:
         print("purple boss bar located")
         states["purplePortalCount"] = states["purplePortalCount"] + 1
-        # pydirectinput.press(config["awakening"])
+        useAwakening()
         while True:
             useAbilities()
 
@@ -1317,7 +1317,7 @@ def useAbilities():
                 moveToMinimapRelative(
                     states["moveToX"], states["moveToY"], 700, 800, True
                 )
-                # pydirectinput.press(config["awakening"])
+                useAwakening()
                 # pydirectinput.press(config["meleeAttack"])
             elif states["status"] == "floor3" and checkFloor3Tower():
                 if not checkFloor2Elite() and not checkFloor2Mob():
@@ -1990,15 +1990,16 @@ def fightFloor2Boss():
         print("boss bar located")
         mouseMoveTo(x=states["moveToX"], y=states["moveToY"])
         sleep(80, 100)
-        # pydirectinput.press(config["awakening"])
-        # if (
-        #     config["characters"][states["currentCharacter"]]["class"] == "summoner"
-        #     or config["characters"][states["currentCharacter"]]["class"] == "paladin"
-        # ):
-        #     sleep(80, 100)
-        #     pydirectinput.press(config["awakening"])
-        #     sleep(80, 100)
-        #     pydirectinput.press(config["awakening"])
+        useAwakening()
+        if (
+            config["useAwakening"] and
+            config["characters"][states["currentCharacter"]]["class"] == "summoner"
+            or config["characters"][states["currentCharacter"]]["class"] == "paladin"
+        ):
+            sleep(80, 100)
+            useAwakening()
+            sleep(80, 100)
+            useAwakening()
 
 
 # def fightFloor2Boss():
@@ -2019,6 +2020,9 @@ def fightFloor2Boss():
 #         states["bossBarLocated"] = True
 #         sleep(2500, 3000)
 
+def useAwakening(): 
+    if (config["useAwakening"]):
+        pydirectinput.press(config["awakening"])
 
 def calculateMinimapRelative(x, y):
     selfLeft = config["minimapCenterX"]

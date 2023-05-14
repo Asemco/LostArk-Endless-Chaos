@@ -50,7 +50,7 @@ config = {
     "friends": "u",
     "invisible": True,
     "healthPotAtPercent": 0.25,  # health threshold to trigger potion
-    # "useAwakening": True, # not checking this for now
+    "useAwakening": False, # not checking this for now
     # "useSpeciality1": True, # not checking this for now
     # "useSpeciality2": True, # not checking this for now
     "auraRepair": True,  # True if you have aura, if not then for non-aura users: MUST have your character parked near a repairer in city before starting the script
