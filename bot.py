@@ -34,10 +34,8 @@ newStates = {
     "maxTime": -1,
     "floor3Mode": True,
     "multiCharacterMode": config["enableMultiCharacterMode"],
-    "currentCharacter": 6,
-    "multiCharacterModeState": [0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2],
-    # "currentCharacter": config["mainCharacter"],
-    # "multiCharacterModeState": [],
+    "currentCharacter": config["mainCharacter"],
+    "multiCharacterModeState": [],
 }
 
 
@@ -54,8 +52,8 @@ def main():
 
     if args.lunshua:
         states["multiCharacterMode"] = True
-        # for i in range(len(config["characters"])):
-        #     states["multiCharacterModeState"].append(2)
+        for i in range(len(config["characters"])):
+            states["multiCharacterModeState"].append(2)
         print(
             "lunshua start, running full runs on characters: {}".format(
                 states["multiCharacterModeState"]
