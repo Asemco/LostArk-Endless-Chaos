@@ -131,3 +131,6 @@ dmypy.json
 # debug screenshots
 debug/
 .vscode/
+
+# Pip downloader
+get-pip.py
