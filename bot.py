@@ -7,6 +7,7 @@ from datetime import date
 from pyscreeze import ImageNotFoundException
 import traceback
 import keyboard
+from playsound import playsound
 
 pydirectinput.PAUSE = 0.05
 paused = False
@@ -141,6 +142,7 @@ def main():
 
         if gaia_1 is not None and gaia_2 is not None:
             print("Both Gaia found! Pausing and asking for input...")
+            playsound('ffxiv.mp3')
             user_input = input("Found Gaia. Enter 1 to stop, or anything else to continue: ")
             if user_input == "1":
                 print(f"Stopping script. Total cycles completed: {cycle_count}")
@@ -153,6 +155,7 @@ def main():
 
         if terra_1 is not None and terra_2 is not None:
             print("Both Terra found! Pausing and asking for input...")
+            playsound('ffvi.mp3')
             user_input = input("Found Terra. Enter 1 to stop, or anything else to continue: ")
             if user_input == "1":
                 print(f"Stopping script. Total cycles completed: {cycle_count}")
@@ -165,6 +168,7 @@ def main():
 
         if cloud_1 is not None and cloud_2 is not None:
             print("Both Cloud found! Pausing and asking for input...")
+            playsound('ffvii.mp3')
             user_input = input("Found Cloud. Enter 1 to stop, or anything else to continue: ")
             if user_input == "1":
                 print(f"Stopping script. Total cycles completed: {cycle_count}")
