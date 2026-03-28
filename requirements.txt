@@ -5,4 +5,4 @@ pywin32
 Pillow
 opencv-python
 pydirectinput
-playsound
+pygame
