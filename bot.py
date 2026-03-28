@@ -37,13 +37,13 @@ def main():
     cycle_count = 0
     terra_count = 0
     gaia_count = 0
+    cloud_count = 0
     
     while True:
         prev_x = None
         prev_y = None
         cycle_count += 1
         print(f"\n=== Cycle {cycle_count} ===")
-        print(f"Gaia found: {gaia_count}, Terra found: {terra_count}")
         
         # Step 1a: Check for gaia_1.png or gaia_2.png
         gaia_1 = None
@@ -51,7 +51,8 @@ def main():
         try:
             gaia_1 = pyautogui.locateCenterOnScreen(
                 ".\\screenshots\\gaia_1.png",
-                confidence=0.9
+                confidence=0.8,
+                grayscale=True
             )
             if gaia_1 is not None:
                 gaia_count += 1
@@ -61,7 +62,8 @@ def main():
         try:
             gaia_2 = pyautogui.locateCenterOnScreen(
                 ".\\screenshots\\gaia_2.png",
-                confidence=0.9
+                confidence=0.8,
+                grayscale=True
             )
             if gaia_2 is not None:
                 gaia_count += 1
@@ -74,7 +76,8 @@ def main():
         try:
             terra_1 = pyautogui.locateCenterOnScreen(
                 ".\\screenshots\\terra_1.png",
-                confidence=0.9
+                confidence=0.8,
+                grayscale=True
             )
             if terra_1 is not None:
                 terra_count += 1
@@ -84,13 +87,39 @@ def main():
         try:
             terra_2 = pyautogui.locateCenterOnScreen(
                 ".\\screenshots\\terra_2.png",
-                confidence=0.9
+                confidence=0.8,
+                grayscale=True
             )
             if terra_2 is not None:
                 terra_count += 1
         except Exception:
             pass
         
+        # Step 1c: Check for cloud_1.png or cloud_2.png
+        cloud_1 = None
+        cloud_2 = None
+        try:
+            cloud_1 = pyautogui.locateCenterOnScreen(
+                ".\\screenshots\\cloud_1.png",
+                confidence=0.8,
+                grayscale=True
+            )
+            if cloud_1 is not None:
+                cloud_count += 1
+        except Exception:
+            pass
+
+        try:
+            cloud_2 = pyautogui.locateCenterOnScreen(
+                ".\\screenshots\\cloud_2.png",
+                confidence=0.8,
+                grayscale=True
+            )
+            if cloud_2 is not None:
+                cloud_count += 1
+        except Exception:
+            pass
+
         if gaia_1 is not None and gaia_2 is not None:
             print("Both Gaia found! Pausing and asking for input...")
             user_input = input("Found Gaia. Enter 1 to stop, or anything else to continue: ")
@@ -100,8 +129,8 @@ def main():
             else:
                 print("Continuing to next steps...")
 
-        if gaia_1 is None or gaia_2 is None:
-            print("Double Gaia not found. Continuing to check Terra.")
+        # if gaia_1 is None or gaia_2 is None:
+        #     print("Double Gaia not found. Continuing to check Terra.")
 
         if terra_1 is not None and terra_2 is not None:
             print("Both Terra found! Pausing and asking for input...")
@@ -112,8 +141,26 @@ def main():
             else:
                 print("Continuing to next steps...")
 
-        if terra_1 is None or terra_2 is None:
-            print("Double Terra not found. Continuing to check for other buttons...")
+        # if terra_1 is None or terra_2 is None:
+        #     print("Double Terra not found. Continuing to check Cloud.")
+
+        if cloud_1 is not None and cloud_2 is not None:
+            print("Both Cloud found! Pausing and asking for input...")
+            user_input = input("Found Cloud. Enter 1 to stop, or anything else to continue: ")
+            if user_input == "1":
+                print(f"Stopping script. Total cycles completed: {cycle_count}")
+                break
+            else:
+                print("Continuing to next steps...")
+
+        # if cloud_1 is None or cloud_2 is None:
+        #     print("Double Cloud not found. Continuing to check for other buttons...")
+
+        print(f"Gaia found: {gaia_count}, Terra found: {terra_count}, Cloud found: {cloud_count}")
+
+        # while True:
+        #     if True == False:
+        #         break
         
         # Step 2: Check for retry_button.png and click if found (repeat until found)
         while True:
@@ -132,7 +179,7 @@ def main():
                 sleep(100, 333)
                 break
             else:
-                print("Retry button not found. Retrying step 2...")
+                # print("Retry button not found. Retrying step 2...")
                 sleep(100, 333)
         
         # Step 3: Check for tap_screen_button.png and click if found (repeat until found)
@@ -166,13 +213,14 @@ def main():
                 pydirectinput.click(x=forbidden_retry_button[0], y=forbidden_retry_button[1])
                 sleep(100, 222)
             else:
-                print("Tap screen button not found. Retrying step 3...")
+                # print("Tap screen button not found. Retrying step 3...")
                 sleep(100, 222)
         
         # Step 4: Check for skip_button.png and click repeatedly until not found
         while True:
             skip_button = None
             alsoRetryButton = None
+            skip_button2 = None
             try:
                 skip_button = pyautogui.locateCenterOnScreen(
                     ".\\screenshots\\skip_button.png",
@@ -190,15 +238,25 @@ def main():
 
             if skip_button is not None:
                 print(f"Clicking on Skip Button!")
-                for i in range(11):
+                for i in range(13):
                     pydirectinput.click(x=skip_button[0], y=skip_button[1])
-                    sleep(100, 333)
+                    sleep(100, 188)
+                    try:
+                        skip_button2 = pyautogui.locateCenterOnScreen(
+                            ".\\screenshots\\skip_button.png",
+                            confidence=0.8
+                        )
+                    except Exception:
+                        pass
+                    if skip_button2 is None:
+                        # print("Skip button no longer found. Moving to next step...")
+                        break
             if alsoRetryButton is not None and skip_button is None:
-                print("Skip button no longer found. Retry Button is on screen. Moving to next step...")
-                sleep(100, 222)
+                # print("Skip button no longer found. Retry Button is on screen. Moving to next step...")
+                # sleep(100, 222)
                 break
             else:
-                print("Skip button not found and Retry Button not found. Clicking and Retrying step 4...")
+                # print("Skip button not found and Retry Button not found. Clicking and Retrying step 4...")
                 pydirectinput.click(prev_x, prev_y)
                 sleep(100, 222)
         
@@ -216,9 +274,9 @@ def main():
             if tap_to_proceed_button is not None:
                 # print(f"Tap to proceed button found at {tap_to_proceed_button}. Clicking...")
                 pydirectinput.click(x=tap_to_proceed_button[0], y=tap_to_proceed_button[1])
-                sleep(100, 222)
+                # sleep(100, 222)
             else:
-                print("Tap to proceed button no longer found. Cycle complete...")
+                # print("Tap to proceed button no longer found. Cycle complete...")
                 break
         
         print(f"Cycle {cycle_count} complete. Starting next cycle...")
