@@ -6,8 +6,10 @@ import random
 from datetime import date
 from pyscreeze import ImageNotFoundException
 import traceback
+import keyboard
 
 pydirectinput.PAUSE = 0.05
+paused = False
 newStates = {
     "status": "inCity",
     "abilities": [],
@@ -39,11 +41,28 @@ def main():
     gaia_count = 0
     cloud_count = 0
     
+    def pause_script():
+        global paused
+        paused = not paused
+        if paused:
+            print("Script paused. Press F12 to resume.")
+        else:
+            print("Script resumed.")
+    
+    keyboard.add_hotkey('f12', pause_script)
+    
     while True:
+        retry_coords = None
+        tap_coords = None
+        forbidden_coords = None
+        skip_coords = None
         prev_x = None
         prev_y = None
         cycle_count += 1
-        print(f"\n=== Cycle {cycle_count} ===")
+        if paused:
+            time.sleep(0.1)
+            continue
+        print(f"\n=== Cycle {cycle_count} === | Press F12 to pause/resume the script.")
         
         # Step 1a: Check for gaia_1.png or gaia_2.png
         gaia_1 = None
@@ -162,125 +181,129 @@ def main():
         #     if True == False:
         #         break
         
-        # Step 2: Check for retry_button.png and click if found (repeat until found)
-        while True:
-            retry_button = None
+        # Step 2 combined: retry -> tap/forbidden -> skip (coords cached outside cycle)
+
+        # find retry button once, click it, and cache coords
+        while retry_coords is None:
+            retry_coords = None
             try:
                 retry_button = pyautogui.locateCenterOnScreen(
                     ".\\screenshots\\retry_button.png",
                     confidence=0.8
                 )
             except Exception:
-                pass
-            
+                retry_button = None
+
             if retry_button is not None:
-                print(f"Retry button found at {retry_button}. Clicking...")
-                pydirectinput.click(x=retry_button[0], y=retry_button[1])
+                retry_coords = retry_button
+                print(f"Retry button found at {retry_coords}.")
+                if paused:
+                    time.sleep(0.1)
+                    continue
+                pydirectinput.click(x=retry_coords[0], y=retry_coords[1])
                 sleep(100, 333)
-                break
-            else:
-                # print("Retry button not found. Retrying step 2...")
-                sleep(100, 333)
-        
-        # Step 3: Check for tap_screen_button.png and click if found (repeat until found)
+
+        # After retry click: repeatedly check for tap_screen_button and forbidden_retry_button
         while True:
-            tap_screen_button = None
-            forbidden_retry_button = None
-            try:
-                tap_screen_button = pyautogui.locateCenterOnScreen(
-                    ".\\screenshots\\tap_screen_button.png",
-                    confidence=0.8
-                )
-            except Exception:
-                pass
-            try:
-                forbidden_retry_button = pyautogui.locateCenterOnScreen(
-                    ".\\screenshots\\forbidden_retry_button.png",
-                    confidence=0.8
-                )
-            except Exception:
-                pass
-            
-            if tap_screen_button is not None:
-                print(f"Tap screen button found at {tap_screen_button}. Clicking...")
-                pydirectinput.click(x=tap_screen_button[0], y=tap_screen_button[1])
-                prev_x=tap_screen_button[0]
-                prev_y=tap_screen_button[1]
-                sleep(1500, 1799)
+            forbidden_coords = None
+            tap_coords = None
+            if paused:
+                time.sleep(0.1)
+                continue
+            if tap_coords is None:
+                try:
+                    tap_screen_button = pyautogui.locateCenterOnScreen(
+                        ".\\screenshots\\tap_screen_button.png",
+                        confidence=0.8
+                    )
+                except Exception:
+                    tap_screen_button = None
+
+                if tap_screen_button is not None:
+                    tap_coords = tap_screen_button
+
+            if forbidden_coords is None:
+                try:
+                    forbidden_retry_button = pyautogui.locateCenterOnScreen(
+                        ".\\screenshots\\forbidden_retry_button.png",
+                        confidence=0.8
+                    )
+                except Exception:
+                    forbidden_retry_button = None
+
+                if forbidden_retry_button is not None:
+                    forbidden_coords = forbidden_retry_button
+
+            if forbidden_coords is not None:
+                print(f"Forbidden retry button found at {forbidden_coords}.")
+                pydirectinput.click(x=forbidden_coords[0], y=forbidden_coords[1])
+                sleep(100, 222)
+                continue
+
+            if tap_coords is not None:
+                print(f"Tap screen button found at {tap_coords}.")
+                pydirectinput.click(x=tap_coords[0], y=tap_coords[1])
+                sleep(150, 179)
                 break
-            if forbidden_retry_button is not None:
-                print(f"Forbidden retry button found at {forbidden_retry_button}. Clicking...")
-                pydirectinput.click(x=forbidden_retry_button[0], y=forbidden_retry_button[1])
-                sleep(100, 222)
-            else:
-                # print("Tap screen button not found. Retrying step 3...")
-                sleep(100, 222)
-        
-        # Step 4: Check for skip_button.png and click repeatedly until not found
-        while True:
-            skip_button = None
-            alsoRetryButton = None
-            skip_button2 = None
+
+            sleep(100, 222)
+
+        # Step 3 (part of combined sequence): locate skip button once and click repeatedly
+        if paused:
+            time.sleep(0.1)
+            continue
+        while skip_coords is None:
             try:
                 skip_button = pyautogui.locateCenterOnScreen(
                     ".\\screenshots\\skip_button.png",
                     confidence=0.8
                 )
             except Exception:
-                pass
-            try:
-                alsoRetryButton = pyautogui.locateCenterOnScreen(
-                    ".\\screenshots\\retry_button.png",
-                    confidence=0.8
-                )
-            except Exception:
-                pass
-
+                skip_button = None
+                
+            tap_to_proceed = None
+            retry_button = None
             if skip_button is not None:
-                print(f"Clicking on Skip Button!")
-                for i in range(13):
-                    pydirectinput.click(x=skip_button[0], y=skip_button[1])
-                    sleep(100, 188)
+                skip_coords = skip_button
+                print(f"Skip button found at {skip_coords}.")
+                while True:    
+                    if paused:
+                        time.sleep(0.1)
+                        continue
+                    pydirectinput.click(x=skip_coords[0], y=skip_coords[1])
                     try:
-                        skip_button2 = pyautogui.locateCenterOnScreen(
-                            ".\\screenshots\\skip_button.png",
+                        close_button = pyautogui.locateCenterOnScreen(
+                            ".\\screenshots\\close_button.png",
                             confidence=0.8
                         )
                     except Exception:
-                        pass
-                    if skip_button2 is None:
-                        # print("Skip button no longer found. Moving to next step...")
+                        close_button = None
+
+                    try:
+                        tap_to_proceed = pyautogui.locateCenterOnScreen(
+                            ".\\screenshots\\tap_to_proceed_button.png",
+                            confidence=0.8
+                        )
+                    except Exception:
+                        tap_to_proceed = None
+
+                    try:
+                        retry_button = pyautogui.locateCenterOnScreen(
+                            ".\\screenshots\\retry_button.png",
+                            confidence=0.8
+                        )
+                    except Exception:
+                        retry_button = None
+
+                    if close_button is not None:
+                        pydirectinput.click(x=close_button[0], y=close_button[1])
+                    if tap_to_proceed is not None:
+                        pydirectinput.click(x=skip_coords[0], y=skip_coords[1])
+                    if retry_button is not None:
+                        skip_coords = True
                         break
-            if alsoRetryButton is not None and skip_button is None:
-                # print("Skip button no longer found. Retry Button is on screen. Moving to next step...")
-                # sleep(100, 222)
-                break
-            else:
-                # print("Skip button not found and Retry Button not found. Clicking and Retrying step 4...")
-                pydirectinput.click(prev_x, prev_y)
-                sleep(100, 222)
-        
-        # Step 5: Check for tap_to_proceed_button.png and click repeatedly until not found
-        while True:
-            tap_to_proceed_button = None
-            try:
-                tap_to_proceed_button = pyautogui.locateCenterOnScreen(
-                    ".\\screenshots\\tap_to_proceed_button.png",
-                    confidence=0.8
-                )
-            except Exception:
-                pass
-            
-            if tap_to_proceed_button is not None:
-                # print(f"Tap to proceed button found at {tap_to_proceed_button}. Clicking...")
-                pydirectinput.click(x=tap_to_proceed_button[0], y=tap_to_proceed_button[1])
-                # sleep(100, 222)
-            else:
-                # print("Tap to proceed button no longer found. Cycle complete...")
-                break
-        
+
         print(f"Cycle {cycle_count} complete. Starting next cycle...")
-        # sleep(1000, 2000)
 
 
 
